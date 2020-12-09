@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using TesteDesenvolvedorAspNet.Contracts;
+using System.Data.Entity;
 using TesteDesenvolvedorAspNet.Data;
 using TesteDesenvolvedorAspNet.Models;
+using TesteDesenvolvedorAspNet.Contracts;
 
 namespace TesteDesenvolvedorAspNet.Repositorio
 {
-    public class ClienteRepositorio
+    public class ClienteRepositorio : IClienteRepositorio
     {
         private readonly Contexto _context;
-        public ClienteRepositorio(Contexto context)
+        public ClienteRepositorio()
         {
-            _context = context;
+            _context = new Contexto();
         }
         public void AdicionarCliente(Cliente cliente)
         {
@@ -39,14 +39,16 @@ namespace TesteDesenvolvedorAspNet.Repositorio
         {
             try
             {
-                var atualizarCliente = _context.ClienteItens.Where(x => x.IdCliente == cliente.IdCliente).FirstOrDefault();
-                atualizarCliente.NomeCliente = cliente.NomeCliente;
-                atualizarCliente.CPF = cliente.CPF;
-                atualizarCliente.Email = cliente.Email;
-                atualizarCliente.IdCliente = cliente.IdCliente;
-
+                _context.Entry(cliente).State = EntityState.Modified;
                 _context.SaveChanges();
-                atualizarCliente = null;
+                //var atualizarCliente = _context.ClienteItens.Where(x => x.IdCliente == cliente.IdCliente).FirstOrDefault();
+                //atualizarCliente.NomeCliente = cliente.NomeCliente;
+                //atualizarCliente.CPF = cliente.CPF;
+                //atualizarCliente.Email = cliente.Email;
+                //atualizarCliente.IdCliente = cliente.IdCliente;
+
+                //_context.SaveChanges();
+                //atualizarCliente = null;
             }
             catch (Exception ex)
             {
@@ -108,7 +110,7 @@ namespace TesteDesenvolvedorAspNet.Repositorio
         {
             try
             {
-                return _context.ClienteItens.ToList();
+                return _context.ClienteItens.Include(x => x.Produtos).ToList();
             }
             catch (Exception ex)
             {

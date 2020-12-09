@@ -1,0 +1,44 @@
+﻿@*@model TesteDesenvolvedorAspNet.Models.Cliente
+
+    @{
+        ViewBag.Title = "Index";
+    }
+
+    <h2>Index</h2>*@
+
+@model IEnumerable<TesteDesenvolvedorAspNet.Models.Cliente>
+
+@{
+    ViewBag.Title = "Index";
+    var grid = new WebGrid(source: Model, canPage: true, defaultSort: "IdCliente", rowsPerPage: 5, canSort: true);
+}
+<br />
+<p>
+    @Html.ActionLink("Novo cliente", "AdicionarCliente", null, new { @class = "btn btn-primary" })
+</p>
+@grid.GetHtml(
+tableStyle: "webGrid",
+htmlAttributes: new { id = "checkableGrid" },
+fillEmptyRows: true,
+alternatingRowStyle: "alt",
+headerStyle: "grid-header",
+footerStyle: "foot-grid",
+mode: WebGridPagerModes.All,
+firstText: "<< Primeiro",
+previousText: " < Anterior",
+nextText: "Próximo >",
+lastText: "Último >>",
+caption: "Detalhes do Usuário",
+emptyRowCellValue: null,
+columns: new[]{
+    grid.Column("IdCliente",header:"ID",style:"text-align-left"),
+    grid.Column("NomeCliente",header:"Nome"),
+    grid.Column("usuarioEmail",header:"Email"),
+    grid.Column("",header: "Ações",format: @<text>@Html.ActionLink("Editar", "EditarCliente", new { id = item.IdCliente })
+    |
+    @Html.ActionLink("Deletar", "DeletarUsuario", new { id = item.IdCliente })
+    |
+    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.IdCliente })
+    </text>)
+}
+)

@@ -4,6 +4,7 @@ using System.Linq;
 using TesteDesenvolvedorAspNet.Contracts;
 using TesteDesenvolvedorAspNet.Data;
 using TesteDesenvolvedorAspNet.Models;
+using System.Data.Entity;
 
 namespace TesteDesenvolvedorAspNet.Repositorio
 {
@@ -38,12 +39,15 @@ namespace TesteDesenvolvedorAspNet.Repositorio
         {
             try
             {
-                var atualizarProduto = _context.ProdutoItens.Where(x => x.IdProduto == produto.IdProduto).FirstOrDefault();
-                atualizarProduto.NomeProduto = produto.NomeProduto;
-                atualizarProduto.IdCliente = produto.IdCliente;
-
+                _context.Entry(produto).State = EntityState.Modified;
                 _context.SaveChanges();
-                atualizarProduto = null;
+
+                //var atualizarProduto = _context.ProdutoItens.Where(x => x.IdProduto == produto.IdProduto).FirstOrDefault();
+                //atualizarProduto.NomeProduto = produto.NomeProduto;
+                ////atualizarProduto.IdCliente = produto.IdCliente;
+
+                //_context.SaveChanges();
+                //atualizarProduto = null;
             }
             catch (Exception ex)
             {

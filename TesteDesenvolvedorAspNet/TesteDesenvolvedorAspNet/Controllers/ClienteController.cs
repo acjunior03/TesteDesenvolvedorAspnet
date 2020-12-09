@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using TesteDesenvolvedorAspNet.Contracts;
 using TesteDesenvolvedorAspNet.Models;
@@ -16,6 +14,7 @@ namespace TesteDesenvolvedorAspNet.Controllers
         {
             _clienteRepositorio = clienteRepositorio;
         }
+
         public ActionResult Index()
         {
             var listaCliente = from cliente in _clienteRepositorio.GetClientes() select cliente;
