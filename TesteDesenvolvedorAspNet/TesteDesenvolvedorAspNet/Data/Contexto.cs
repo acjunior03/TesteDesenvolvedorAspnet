@@ -9,6 +9,8 @@ namespace TesteDesenvolvedorAspNet.Data
 {
     public class Contexto : DbContext
     {
+        public Contexto()
+      : base(){ }
         public DbSet<Produto> ProdutoItens { get; set; }
         public DbSet<Cliente> ClienteItens { get; set; }
     }

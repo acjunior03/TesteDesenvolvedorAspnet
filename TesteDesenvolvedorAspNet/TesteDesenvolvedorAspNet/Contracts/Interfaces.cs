@@ -15,4 +15,12 @@ namespace TesteDesenvolvedorAspNet.Contracts
         void DeletaProduto(Int64 produtoId);
         void AtualizaProduto(Produto produto);
     }
+    public interface IClienteRepositorio
+    {
+        IEnumerable<Cliente> GetClientes();
+        Cliente GetClienteporId(Int64 idCliente);
+        void AdicionarCliente(Cliente cliente);
+        void DeletaCliente(Int64 ClienteId);
+        void AtualizaCliente(Cliente cliente);
+    }
 }
