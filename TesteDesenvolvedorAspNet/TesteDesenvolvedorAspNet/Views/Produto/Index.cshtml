@@ -1,0 +1,44 @@
+﻿@*@model TesteDesenvolvedorAspNet.Models.Produto
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>*@
+
+
+@model IEnumerable<TesteDesenvolvedorAspNet.Models.Produto>
+
+@{
+    ViewBag.Title = "Index";
+    var grid = new WebGrid(source: Model, canPage: true, defaultSort: "IdProduto", rowsPerPage: 5, canSort: true);
+}
+<br />
+
+@grid.GetHtml(
+tableStyle: "table",
+htmlAttributes: new { id = "GridProdutos" },
+fillEmptyRows: true,
+alternatingRowStyle: "alt",
+headerStyle: "",
+footerStyle: "",
+mode: WebGridPagerModes.All,
+firstText: "<< Primeiro",
+previousText: " < Anterior",
+nextText: "Próximo >",
+lastText: "Último >>",
+caption: "Detalhes do Produto",
+emptyRowCellValue: null,
+columns: new[]{
+    grid.Column("IdProduto",header:"ID",style:"text-align-left"),
+    grid.Column("NomeProduto",header:"Nome"),
+    grid.Column("",header: "Ações",format: @<text>
+    @Html.ActionLink("Editar", "EditarProduto", new { id = item.IdProduto })
+    |
+    @Html.ActionLink("Deletar", "DeletarProduto", new { id = item.IdProduto })
+    </text>)
+}
+)
+<p>
+    @Html.ActionLink("Novo Produto", "AdicionarProduto", null, new { @class = "btn btn-primary" })
+</p>

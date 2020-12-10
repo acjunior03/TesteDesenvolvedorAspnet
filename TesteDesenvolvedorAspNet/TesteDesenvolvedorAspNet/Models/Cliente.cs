@@ -8,13 +8,7 @@ namespace TesteDesenvolvedorAspNet.Models
     [Table("Cliente")]
     public class Cliente
     {
-        //public Cliente()
-        //{
-        //    this.Produtos = new HashSet<Produto>();
-        //}
-
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Int64 IdCliente { get; set; }
         [Required(ErrorMessage = "Nome do cliente deve ser inserido.")]
         public String NomeCliente { get; set; }

@@ -21,7 +21,7 @@ namespace TesteDesenvolvedorAspNet.Controllers
             var listaProduto = from produto in _produtoRepositorio.GetProdutos() select produto;
             return View(listaProduto);
         }
-        public ActionResult AdicionarUsuario()
+        public ActionResult AdicionarProduto()
         {
             return View();
         }
@@ -40,7 +40,7 @@ namespace TesteDesenvolvedorAspNet.Controllers
             }
             return View(produto);
         }
-        [HttpPut]
+        [HttpPost]
         public ActionResult EditarProduto(Produto produto)
         {
             _produtoRepositorio.AtualizaProduto(produto);
@@ -55,7 +55,7 @@ namespace TesteDesenvolvedorAspNet.Controllers
             }
             return View(produto);
         }
-        [HttpDelete]
+        [HttpPost]
         public ActionResult DeletarProduto(Produto produto)
         {
             _produtoRepositorio.DeletaProduto(produto.IdProduto);

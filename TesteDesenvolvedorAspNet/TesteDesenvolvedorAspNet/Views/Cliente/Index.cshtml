@@ -13,16 +13,13 @@
     var grid = new WebGrid(source: Model, canPage: true, defaultSort: "IdCliente", rowsPerPage: 5, canSort: true);
 }
 <br />
-<p>
-    @Html.ActionLink("Novo cliente", "AdicionarCliente", null, new { @class = "btn btn-primary" })
-</p>
 @grid.GetHtml(
-tableStyle: "webGrid",
-htmlAttributes: new { id = "checkableGrid" },
+tableStyle: "table",
+htmlAttributes: new { id = "Gridclientes" },
 fillEmptyRows: true,
 alternatingRowStyle: "alt",
-headerStyle: "grid-header",
-footerStyle: "foot-grid",
+headerStyle: "",
+footerStyle: "",
 mode: WebGridPagerModes.All,
 firstText: "<< Primeiro",
 previousText: " < Anterior",
@@ -33,12 +30,16 @@ emptyRowCellValue: null,
 columns: new[]{
     grid.Column("IdCliente",header:"ID",style:"text-align-left"),
     grid.Column("NomeCliente",header:"Nome"),
-    grid.Column("usuarioEmail",header:"Email"),
-    grid.Column("",header: "Ações",format: @<text>@Html.ActionLink("Editar", "EditarCliente", new { id = item.IdCliente })
+    grid.Column("Email",header:"Email"),
+    grid.Column("",header: "Ações",format: @<text>
+    @Html.ActionLink("Produtos", "Detalhes", new { id = item.IdCliente })
     |
-    @Html.ActionLink("Deletar", "DeletarUsuario", new { id = item.IdCliente })
+    @Html.ActionLink("Editar", "EditarCliente", new { id = item.IdCliente })
     |
-    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.IdCliente })
+    @Html.ActionLink("Deletar", "DeletarCliente", new { id = item.IdCliente })
     </text>)
 }
 )
+<p>
+    @Html.ActionLink("Novo cliente", "AdicionarCliente", null, new { @class = "btn btn-primary" })
+</p>

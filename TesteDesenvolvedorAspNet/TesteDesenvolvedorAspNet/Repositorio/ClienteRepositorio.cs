@@ -41,14 +41,6 @@ namespace TesteDesenvolvedorAspNet.Repositorio
             {
                 _context.Entry(cliente).State = EntityState.Modified;
                 _context.SaveChanges();
-                //var atualizarCliente = _context.ClienteItens.Where(x => x.IdCliente == cliente.IdCliente).FirstOrDefault();
-                //atualizarCliente.NomeCliente = cliente.NomeCliente;
-                //atualizarCliente.CPF = cliente.CPF;
-                //atualizarCliente.Email = cliente.Email;
-                //atualizarCliente.IdCliente = cliente.IdCliente;
-
-                //_context.SaveChanges();
-                //atualizarCliente = null;
             }
             catch (Exception ex)
             {

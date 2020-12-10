@@ -41,13 +41,6 @@ namespace TesteDesenvolvedorAspNet.Repositorio
             {
                 _context.Entry(produto).State = EntityState.Modified;
                 _context.SaveChanges();
-
-                //var atualizarProduto = _context.ProdutoItens.Where(x => x.IdProduto == produto.IdProduto).FirstOrDefault();
-                //atualizarProduto.NomeProduto = produto.NomeProduto;
-                ////atualizarProduto.IdCliente = produto.IdCliente;
-
-                //_context.SaveChanges();
-                //atualizarProduto = null;
             }
             catch (Exception ex)
             {
@@ -109,7 +102,8 @@ namespace TesteDesenvolvedorAspNet.Repositorio
         {
             try
             {
-                return _context.ProdutoItens.ToList();
+                var a = _context.ProdutoItens.ToList();
+                return a;
             }
             catch (Exception ex)
             {

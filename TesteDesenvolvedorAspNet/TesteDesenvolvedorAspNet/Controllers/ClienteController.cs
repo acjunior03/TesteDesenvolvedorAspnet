@@ -20,7 +20,7 @@ namespace TesteDesenvolvedorAspNet.Controllers
             var listaCliente = from cliente in _clienteRepositorio.GetClientes() select cliente;
             return View(listaCliente);
         }
-        public ActionResult AdicionarUsuario()
+        public ActionResult AdicionarCliente()
         {
             return View();
         }
@@ -39,7 +39,7 @@ namespace TesteDesenvolvedorAspNet.Controllers
             }
             return View(cliente);
         }
-        [HttpPut]
+        [HttpPost]
         public ActionResult EditarCliente(Cliente cliente)
         {
             _clienteRepositorio.AtualizaCliente(cliente);
@@ -54,7 +54,7 @@ namespace TesteDesenvolvedorAspNet.Controllers
             }
             return View(produto);
         }
-        [HttpDelete]
+        [HttpPost]
         public ActionResult DeletarCliente(Cliente cliente)
         {
             _clienteRepositorio.DeletaCliente(cliente.IdCliente);

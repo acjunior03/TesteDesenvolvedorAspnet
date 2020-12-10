@@ -23,7 +23,6 @@ namespace TesteDesenvolvedorAspNet
         public static void RegistraComponentes()
         {
             var container = new UnityContainer();
-            //container.RegisterType<Contexto>();
             container.RegisterType<IClienteRepositorio, ClienteRepositorio>();
             container.RegisterType<IProdutoRepositorio, ProdutoRepositorio>();
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
