@@ -5,6 +5,8 @@
     var grid = new WebGrid(source: Model, canPage: true, defaultSort: "IdCliente", rowsPerPage: 5, canSort: true);
 }
 <br />
+<span id="erroAdicionar" style="display:none;" class="alert alert-danger">@TempData["ErroProdutos"]</span>
+<br />
 @grid.GetHtml(
 tableStyle: "table",
 htmlAttributes: new { id = "Gridclientes" },
@@ -35,3 +37,13 @@ columns: new[]{
 <p>
     @Html.ActionLink("Novo cliente", "AdicionarCliente", null, new { @class = "btn btn-primary" })
 </p>
+
+<script>
+    document.onreadystatechange = function () {
+        if (document.readyState === 'complete') {
+            if (document.getElementById('erroAdicionar').textContent != '') {
+                document.getElementById('erroAdicionar').style.display = 'block';
+            }
+        }
+    }
+</script>

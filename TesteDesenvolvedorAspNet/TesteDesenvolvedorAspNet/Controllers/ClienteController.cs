@@ -25,6 +25,11 @@ namespace TesteDesenvolvedorAspNet.Controllers
         public ActionResult AdicionarCliente()
         {
             var listaProduto = _produtoRepositorio.GetProdutosAtivos();
+            if (listaProduto.Count() == 0)
+            {
+                TempData["ErroProdutos"] = "Não existem produtos disponiveis para cadastrar cliente.";
+                return RedirectToAction("Index");
+            }
             ViewBag.Produtos = new SelectList(listaProduto, "IdProduto", "NomeProduto", listaProduto.FirstOrDefault().IdProduto);
             return View(new Cliente());
         }

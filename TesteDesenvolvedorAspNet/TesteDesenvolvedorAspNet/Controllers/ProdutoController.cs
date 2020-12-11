@@ -30,6 +30,7 @@ namespace TesteDesenvolvedorAspNet.Controllers
         [HttpPost]
         public ActionResult AdicionarProduto(Produto produto)
         {
+            produto.IdCliente = 0;
             _produtoRepositorio.AdicionarProduto(produto);
             return RedirectToAction("Index");
         }
