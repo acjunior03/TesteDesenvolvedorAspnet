@@ -1,5 +1,4 @@
 ﻿@model TesteDesenvolvedorAspNet.Models.Cliente
-
 @{
     ViewBag.Title = "AdicionarCliente";
 }
@@ -7,13 +6,17 @@
 <h2>AdicionarCliente</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
 <div class="form-horizontal">
     <h4>Cliente</h4>
     <hr />
+    <div>
+        @Html.ValidationSummary(true)
+    </div>
+    @Html.Hidden("IdProduto")
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(model => model.NomeCliente, "Nome Cliente", htmlAttributes: new { @class = "control-label col-md-2", placeholder = "Nome Usuraio" })
@@ -22,43 +25,58 @@
             @Html.ValidationMessageFor(model => model.NomeCliente, "", new { @class = "text-danger" })
         </div>
     </div>
-
     <div class="form-group">
         @Html.LabelFor(model => model.CPF, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.CPF, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.CPF, new { htmlAttributes = new { @class = "form-control", @onkeyup = "ValidacaoCpf();", @maxlength = "11" } })
             @Html.ValidationMessageFor(model => model.CPF, "", new { @class = "text-danger" })
+            <span id="erroCpf" class="text-danger">@TempData["ErroCpf"]</span>
         </div>
     </div>
-
     <div class="form-group">
         @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @onkeyup = "ValidacaoEmail();" } })
             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            <span id="erroEmail" class="text-danger">@TempData["ErroEmail"]</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Produto</label>
+        <div class="col-md-10">
+            @Html.DropDownList("IdProduto", (SelectList)ViewBag.Produtos, "-- Selecione --", new { @class = "form-control", @id = "drpProduto", @onchange = "mudaReferencia()"})
         </div>
     </div>
 
-    @*<div class="form-group">
-        @Html.LabelFor(model => model.IdCliente, "IdCliente", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("IdCliente", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.IdCliente, "", new { @class = "text-danger" })
-        </div>
-    </div>*@
-
+    @{
+        var grid1 = new WebGrid(source: Model.Produtos, canPage: true, defaultSort: "IdProduto", rowsPerPage: 5, canSort: true);
+    }
+    <br />
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Salvar" class="btn btn-default" />
+            <input type="submit" value="Salvar" class="btn btn-default" /> |
+            @Html.ActionLink("Retornar", "Index", null, new { @class = "btn btn-success" })
         </div>
     </div>
 </div>
 }
-
-<div>
-    @Html.ActionLink("Retornar", "Index", null, new { @class = "btn btn-success" })
-</div>
-
+<script>ment.getElementById('IdCliente').value = option.value;
+    }
+    function ValidacaoCpf() {
+        document.getElementById('erroCpf').style.display = 'none';
+    }
+    function ValidacaoEmail() {
+        document.getElementById('erroEmail').style.display = 'none';
+    }
+    function AdicionaPRoduto() {
+        alert('');
+    }
+    function mudaReferencia() {
+        var select = document.getElementById('drpProduto');
+        var option = select.options[select.selectedIndex];
+        document.getElementById('IdProduto').value = option.value;
+    }
+</script>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

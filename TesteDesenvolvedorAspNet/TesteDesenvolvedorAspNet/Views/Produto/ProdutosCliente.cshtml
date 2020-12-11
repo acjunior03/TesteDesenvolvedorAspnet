@@ -1,0 +1,36 @@
+﻿@model IEnumerable<TesteDesenvolvedorAspNet.Models.Produto>
+
+@{
+    ViewBag.Title = "Index";
+    var grid = new WebGrid(source: Model, canPage: true, defaultSort: "IdProduto", rowsPerPage: 5, canSort: true);
+}
+<br />
+
+@grid.GetHtml(
+tableStyle: "table",
+htmlAttributes: new { id = "GridProdutosCliente" },
+fillEmptyRows: true,
+alternatingRowStyle: "alt",
+headerStyle: "",
+footerStyle: "",
+mode: WebGridPagerModes.All,
+firstText: "<< Primeiro",
+previousText: " < Anterior",
+nextText: "Próximo >",
+lastText: "Último >>",
+caption: "Produtos do Cliente",
+emptyRowCellValue: null,
+columns: new[]{
+    grid.Column("IdProduto",header:"ID",style:"text-align-left"),
+    grid.Column("NomeProduto",header:"Nome"),
+    grid.Column("Cliente.NomeCliente",header:"Nome Cliente"),
+    grid.Column("",header: "Ação",format: @<text>
+    @Html.ActionLink("Remover cliente", "RemoverCliente", new { IdProduto = item.IdProduto, IdCliente = item.IdCliente })
+    </text>)
+}
+)
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        @Html.ActionLink("Retornar", "Index", "Cliente", null, new { @class = "btn btn-success" })
+    </div>
+</div>

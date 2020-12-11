@@ -15,12 +15,28 @@ namespace TesteDesenvolvedorAspNet.Repositorio
         {
             _context = new Contexto();
         }
-        public void AdicionarCliente(Cliente cliente)
+        public void AdicionarCliente(Cliente cliente, Int64 IdProduto)
         {
             try
             {
-                _context.ClienteItens.Add(cliente);
-                _context.SaveChanges();
+                DbContextTransaction transacao = null;
+                transacao = _context.Database.BeginTransaction();
+                {
+                    var produto = _context.ProdutoItens.SingleOrDefault(s => s.IdProduto == IdProduto);
+                    if (produto is null)
+                    {
+                        transacao.Rollback();
+                    }
+                    else
+                    {
+                        _context.ClienteItens.Add(cliente);
+                        _context.SaveChanges();
+
+                        produto.IdCliente = cliente.IdCliente;
+                        _context.SaveChanges();
+                        transacao.Commit();
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -34,12 +50,58 @@ namespace TesteDesenvolvedorAspNet.Repositorio
                 }
             }
         }
+        public string VerificaCpf(Cliente cliente)
+        {
+            string retorno = "";
+            try
+            {
+                IEnumerable<Cliente> obj = _context.ClienteItens.Where(s => s.CPF == cliente.CPF);
+                if (obj.Count() > 0)
+                {
+                    if (!(obj.FirstOrDefault().IdCliente == cliente.IdCliente))
+                    {
+                        retorno = "Já existe CPF cadastrado";
+                    }
+                }
+                return retorno;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string VerificaEmail(Cliente cliente)
+        {
+            string retorno = "";
+            try
+            {
+                IEnumerable<Cliente> obj = _context.ClienteItens.Where(s => s.Email == cliente.Email);
+                if (obj.Count() > 0)
+                {
+                    if (!(obj.FirstOrDefault().IdCliente == cliente.IdCliente))
+                    {
+                        retorno = "Já existe Email cadastrado";
+                    }
+                }
+                return retorno;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public void AtualizaCliente(Cliente cliente)
         {
             try
             {
-                _context.Entry(cliente).State = EntityState.Modified;
+                dynamic obj = new Cliente();
+                obj = _context.ClienteItens.Include(x => x.Produtos).SingleOrDefault(s => s.IdCliente == cliente.IdCliente);
+
+                obj.Email = cliente.Email;
+                obj.CPF = cliente.CPF;
+                obj.NomeCliente = cliente.NomeCliente;
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -59,10 +121,23 @@ namespace TesteDesenvolvedorAspNet.Repositorio
         {
             try
             {
-                Cliente _cliente = _context.ClienteItens.SingleOrDefault(x => x.IdCliente == clienteId);
-                _context.ClienteItens.Remove(_cliente);
-                _context.SaveChanges();
-                _cliente = null;
+                DbContextTransaction transacao = null;
+                transacao = _context.Database.BeginTransaction();
+                {
+                    Cliente _cliente = _context.ClienteItens.SingleOrDefault(x => x.IdCliente == clienteId);
+                    IEnumerable<Produto> produtos = _context.ProdutoItens.Where(z => z.IdCliente == clienteId);
+                    foreach (var item in produtos)
+                    {
+                        item.IdCliente = 0;
+                        _context.Entry(item).State = EntityState.Modified;
+                    }
+                    _context.SaveChanges();
+
+                    _context.ClienteItens.Remove(_cliente);
+                    _context.SaveChanges();
+                    _cliente = null;
+                    transacao.Commit();
+                }
             }
             catch (Exception ex)
             {
@@ -82,7 +157,7 @@ namespace TesteDesenvolvedorAspNet.Repositorio
             try
             {
                 dynamic obj = new Cliente();
-                obj = _context.ClienteItens.SingleOrDefault(s => s.IdCliente == idCliente);
+                obj = _context.ClienteItens.Include(x=> x.Produtos).AsNoTracking().SingleOrDefault(s => s.IdCliente == idCliente);
                 return obj;
             }
             catch (Exception ex)
@@ -102,7 +177,7 @@ namespace TesteDesenvolvedorAspNet.Repositorio
         {
             try
             {
-                return _context.ClienteItens.Include(x => x.Produtos).ToList();
+                return _context.ClienteItens.ToList();
             }
             catch (Exception ex)
             {
@@ -116,6 +191,5 @@ namespace TesteDesenvolvedorAspNet.Repositorio
                 }
             }
         }
-
     }
 }

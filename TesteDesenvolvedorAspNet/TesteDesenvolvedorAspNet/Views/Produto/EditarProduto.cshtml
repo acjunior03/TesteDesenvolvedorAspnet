@@ -1,7 +1,7 @@
 ﻿@model TesteDesenvolvedorAspNet.Models.Produto
 
 @{
-    ViewBag.Title = "EditarProduto";
+    ViewBag.Title = "Editar Produto";
 }
 
 <h2>EditarProduto</h2>
@@ -16,7 +16,7 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.IdProduto)
-
+    @Html.HiddenFor(model => model.IdCliente)
     <div class="form-group">
         @Html.LabelFor(model => model.NomeProduto, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -32,6 +32,19 @@
         </div>
     </div>
     <div class="form-group">
+        <label class="control-label col-md-2">Cliente</label>
+        <div class="col-md-10">
+            @if (Model.IdCliente == 0)
+            {
+                @Html.DropDownList("IdCliente", (SelectList)ViewBag.Clientes, new { @class = "form-control", @id="drpCliente", @onchange = "mudaReferencia()" } )
+            }
+            else
+            {
+                @Html.Label(Model.Cliente.NomeCliente, htmlAttributes: new { @class = "control-label col-md-2" })
+            }
+        </div>
+    </div>
+    <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Salvar" class="btn btn-default" /> |
             @Html.ActionLink("Retornar", "Index", null, new { @class = "btn btn-success" })
@@ -42,3 +55,10 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+<script>
+    function mudaReferencia() {
+        var select = document.getElementById('drpCliente');
+        var option = select.options[select.selectedIndex];
+        document.getElementById('IdCliente').value = option.value;
+    }
+</script>

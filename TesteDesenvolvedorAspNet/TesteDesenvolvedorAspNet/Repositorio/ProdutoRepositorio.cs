@@ -41,6 +41,28 @@ namespace TesteDesenvolvedorAspNet.Repositorio
             {
                 _context.Entry(produto).State = EntityState.Modified;
                 _context.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (_context != null)
+                {
+                    _context.Dispose();
+                }
+            }
+        }
+        public void RemoveClienteProduto(Int64 IdProduto)
+        {
+            try
+            {
+                Produto produto = _context.ProdutoItens.SingleOrDefault(x => x.IdProduto == IdProduto);
+                produto.IdCliente = new Int64();
+                _context.Entry(produto).State = EntityState.Modified;
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -82,7 +104,27 @@ namespace TesteDesenvolvedorAspNet.Repositorio
             try
             {
                 dynamic obj = new Produto();
-                obj = _context.ProdutoItens.SingleOrDefault(s => s.IdProduto == idProduto);
+                obj = _context.ProdutoItens.Include(z => z.Cliente).SingleOrDefault(s => s.IdProduto == idProduto);
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (_context != null)
+                {
+                    _context.Dispose();
+                }
+            }
+        }
+        public IEnumerable<Produto> GetProdutoPorIdCliente(Int64 idCliente)
+        {
+            try
+            {
+                dynamic obj = new Produto();
+                obj = _context.ProdutoItens.Include(z => z.Cliente).Where(s => s.IdCliente == idCliente).ToList();
                 return obj;
             }
             catch (Exception ex)
@@ -102,8 +144,26 @@ namespace TesteDesenvolvedorAspNet.Repositorio
         {
             try
             {
-                var a = _context.ProdutoItens.ToList();
-                return a;
+                var f = _context.ProdutoItens.ToList();
+                return f;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (_context != null)
+                {
+                    _context.Dispose();
+                }
+            }
+        }
+        public IEnumerable<Produto> GetProdutosAtivos()
+        {
+            try
+            {
+                return _context.ProdutoItens.Where(z => z.Ativo == true && z.IdCliente == 0).ToList();
             }
             catch (Exception ex)
             {

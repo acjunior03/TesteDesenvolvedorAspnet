@@ -18,7 +18,7 @@
         @Html.HiddenFor(model => model.IdCliente)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.NomeCliente, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.NomeCliente, "Nome Cliente", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.NomeCliente, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.NomeCliente, "", new { @class = "text-danger" })
@@ -32,7 +32,6 @@
                 @Html.ValidationMessageFor(model => model.CPF, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -40,11 +39,32 @@
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        @{
+            var grid1 = new WebGrid(source: Model.Produtos, canPage: true, defaultSort: "IdProduto", rowsPerPage: 5, canSort: true);
+        }
+        <br />
+        @grid1.GetHtml(
+        tableStyle: "table",
+        htmlAttributes: new { id = "GridProdutosCliente" },
+        fillEmptyRows: true,
+        alternatingRowStyle: "alt",
+        headerStyle: "",
+        footerStyle: "",
+        mode: WebGridPagerModes.All,
+        firstText: "<< Primeiro",
+        previousText: " < Anterior",
+        nextText: "Próximo >",
+        lastText: "Último >>",
+        caption: "Produtos do Cliente",
+        emptyRowCellValue: null,
+        columns: new[]{
+            grid1.Column("IdProduto",header:"ID",style:"text-align-left"),
+            grid1.Column("NomeProduto",header:"Nome") }
+)
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Salvar" class="btn btn-default" /> |
-                @Html.ActionLink("Retornar", "Index", null, new { @class = "btn btn-success" })
+                @Html.ActionLink("Retornar", "Index", null, htmlAttributes: new { @class = "btn btn-success" })
             </div>
         </div>
     </div>

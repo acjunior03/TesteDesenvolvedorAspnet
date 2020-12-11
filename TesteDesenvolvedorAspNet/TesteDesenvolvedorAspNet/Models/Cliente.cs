@@ -8,6 +8,10 @@ namespace TesteDesenvolvedorAspNet.Models
     [Table("Cliente")]
     public class Cliente
     {
+        public Cliente()
+        {
+            Produtos = new List<Produto>();
+        }
         [Key]
         public Int64 IdCliente { get; set; }
         [Required(ErrorMessage = "Nome do cliente deve ser inserido.")]

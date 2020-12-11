@@ -1,12 +1,4 @@
-﻿@*@model TesteDesenvolvedorAspNet.Models.Cliente
-
-    @{
-        ViewBag.Title = "Index";
-    }
-
-    <h2>Index</h2>*@
-
-@model IEnumerable<TesteDesenvolvedorAspNet.Models.Cliente>
+﻿@model IEnumerable<TesteDesenvolvedorAspNet.Models.Cliente>
 
 @{
     ViewBag.Title = "Index";
@@ -32,7 +24,7 @@ columns: new[]{
     grid.Column("NomeCliente",header:"Nome"),
     grid.Column("Email",header:"Email"),
     grid.Column("",header: "Ações",format: @<text>
-    @Html.ActionLink("Produtos", "Detalhes", new { id = item.IdCliente })
+    @Html.ActionLink("Produtos",  "ProdutosCliente", "Produto",new { id = item.IdCliente },null)
     |
     @Html.ActionLink("Editar", "EditarCliente", new { id = item.IdCliente })
     |

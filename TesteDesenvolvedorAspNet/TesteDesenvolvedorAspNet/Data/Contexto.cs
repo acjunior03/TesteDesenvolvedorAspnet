@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using TesteDesenvolvedorAspNet.Models;
 
 namespace TesteDesenvolvedorAspNet.Data
@@ -10,9 +11,11 @@ namespace TesteDesenvolvedorAspNet.Data
       
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
             modelBuilder.Entity<Produto>().HasKey(c => new { c.IdProduto });
             modelBuilder.Entity<Cliente>().HasKey(c => new { c.IdCliente });
-            modelBuilder.Entity<Produto>().HasRequired(t => t.Cliente).WithMany(t => t.Produtos).HasForeignKey(d => d.IdCliente);
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<Produto> ProdutoItens { get; set; }
