@@ -25,7 +25,7 @@ namespace TesteDesenvolvedorAspNet.Controllers
         public ActionResult AdicionarCliente()
         {
             var listaProduto = _produtoRepositorio.GetProdutosAtivos();
-            ViewBag.Produtos = new SelectList(listaProduto, "IdProduto", "NomeProduto");
+            ViewBag.Produtos = new SelectList(listaProduto, "IdProduto", "NomeProduto", listaProduto.FirstOrDefault().IdProduto);
             return View(new Cliente());
         }
         [HttpPost]
